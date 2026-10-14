@@ -1,5 +1,5 @@
 // Replace this with the Web App URL after deploying Code.gs.
-const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbziNuSdEV9jHllh_Fnw2BX1iMBuFlf7RBMB39V9EVBXs9ttlHLWI7rdwOo4ep79qcYQ/exec";
+const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzELH_KFcubwdNTBr_Rhqky2g0avdrD9653WrIbtg5udG6oHzyS3TBrp3ST5X5L6JxI/exec";
 
 function sendQuizResultToGoogleSheets(payload) {
     return fetch(GOOGLE_SHEETS_SCRIPT_URL, {
