@@ -1,4 +1,4 @@
-const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyh1Kt0IpGz98Otnp8LWCcAokWWbD1RCjIjMVUuQ8kFaf_aVFpFnupPgUNR3cm6z60-/exec";
+const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzeFSGSQsggNgTsWmJewJpNAIryzvlh6U_5EV6_N9aDlXnyldRrTfjqumaCEpxdDO_X/exec";
 
 function requestQuizApi(parameters, timeoutMs = 10000) {
     return new Promise((resolve, reject) => {
