@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Simulasi TKJ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <div class="top-navbar">
+        <div class="nav-icon">🖥️</div>
+        <div>
+            <h1>Kuis Simulasi TKJ</h1>
+            <p>Guru Mapel :  Farchan Muzaki, S.Kom</p>
+            <p id="subjectLabel">Pilih kategori soal</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="card">
+            
+            <!-- FORM 1: IDENTITAS PESERTA -->
+            <div class="quiz-lock-warning" id="quizResetNotice" role="alert" hidden></div>
+            <form id="identityForm">
+                <div class="identity-header">
+                    <div class="avatar-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3L1 9L12 15L21 10.09V17H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"/>
+                        </svg>
+                    </div>
+                    <h2>Identitas Peserta</h2>
+                    <p>Isi data diri Anda dengan benar sebelum memulai kuis.</p>
+                </div>
+
+                <div class="form-group" id="categoryTokenGroup" hidden>
+                    <label for="categoryToken">Token Kategori <span class="required">*</span></label>
+                    <div class="token-input-wrapper">
+                        <input type="password" id="categoryToken" autocomplete="off" placeholder="Masukan token">
+                        <button type="button" class="token-visibility-toggle" id="toggleCategoryToken" aria-label="Lihat token" aria-controls="categoryToken" aria-pressed="false">Lihat</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentName">Nama Lengkap <span class="required">*</span></label>
+                    <input type="text" id="studentName" placeholder="Contoh: Ahmad Rizky" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentClass">Kelas<span class="required">*</span></label>
+                    <select id="studentClass" required>
+                        <option value="" disabled selected>Pilih kelas</option>
+                        <option value="XT TJKT 1">XT TJKT 1</option>
+                        <option value="XI TJKT 2">XI TJKT 2</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="quizCategory">Kategori Soal <span class="required">*</span></label>
+                    <select id="quizCategory" required>
+                        <option value="" disabled selected>Pilih kategori soal</option>
+                        <option value="Pemasangan dan Konfigurasi Perangkat Jaringan Komputer">Pemasangan dan Konfigurasi Perangkat Jaringan Komputer</option>
+                    </select>
+                    <span class="field-hint" id="categoryHint" role="status">Pilih kategori untuk melihat ketersediaan soal.</span>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-icon">i</div>
+                    <div class="info-text">
+                        Kuis terdiri dari <strong id="questionCountText">30 Soal Pilihan Ganda</strong>. Gunakan tombol <strong>Next</strong> dan <strong>Previous</strong> untuk berpindah soal.
+                        <br><br>
+                        Urutan soal diacak oleh server dan batas waktu 60 menit diperiksa oleh server. Menyalin teks, menu klik kanan, dan pintasan umum dibatasi di halaman; upaya yang terdeteksi browser dicatat. Mode layar penuh wajib diaktifkan saat mulai. Keluar dari layar penuh, berpindah tab/aplikasi, kehilangan fokus, atau perubahan ukuran jendela yang terdeteksi sebagai layar belah akan mereset kuis dan dicatat. Deteksi layar belah mengandalkan sinyal ukuran jendela yang disediakan browser dan tidak dapat menjamin deteksi pada semua perangkat Android. Browser web tidak dapat mengunci bilah sistem Android atau mendeteksi secara langsung overlay, perekaman layar, maupun tangkapan layar; aktivitas tersebut hanya dapat diketahui jika menyebabkan browser memberi sinyal seperti kehilangan fokus atau perubahan ukuran jendela. Kuis ini tidak menggunakan kamera atau mikrofon.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit-initial">
+                    Mulai Mengerjakan ➔
+                </button>
+            </form>
+
+            <!-- FORM 2: SOAL-SOAL KUIS -->
+            <div id="quizSection">
+                <div class="quiz-progress-header">
+                    <span class="progress-text" id="progressIndicator">Soal 1 dari 25</span>
+                    <span class="timer" id="quizTimer" role="timer" aria-live="off">Waktu tersisa: 60:00</span>
+                </div>
+                <p class="proctor-status" id="proctorStatus" role="status">Pemantauan browser aktif · Pelanggaran: 0</p>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+
+                <form id="quizForm">
+                    <div id="questionsContainer"></div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="nav-btn-group">
+                        <button type="button" class="btn-action btn-prev" id="btnPrev" onclick="changeQuestion(-1)" disabled>
+                            ⬅️ Sebelumnya
+                        </button>
+                        <button type="button" class="btn-action btn-next" id="btnNext" onclick="changeQuestion(1)">
+                            Selanjutnya ➡️
+                        </button>
+                        <button type="submit" class="btn-action btn-submit" id="btnSubmit">
+                            Selesai & Kirim ➔
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- VIEW 3: HASIL PENGERJAAN AKHIR -->
+            <div id="resultView">
+                <!-- Icon Centang Hijau -->
+                <div class="success-circle">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                </div>
+
+                <h2 class="result-title">Kuis Selesai!</h2>
+                <p class="result-subtitle">Terima kasih telah menyelesaikan KUIS Simulasi TKJ.</p>
+
+                <!-- Skor Summary Grid -->
+                <div class="score-summary-card">
+                    <div class="score-col">
+                        <span class="score-col-label">SKOR AKHIR</span>
+                        <span class="score-col-value" id="finalScoreVal">0</span>
+                        <span class="score-col-sub">dari 100 poin</span>
+                    </div>
+                    <div class="score-col">
+                        <span class="score-col-label">BENAR / TOTAL</span>
+                        <span class="score-col-value" id="correctRatioVal">0 / 25</span>
+                        <span class="score-col-sub score-col-sub-success">Soal Dijawab</span>
+                    </div>
+                </div>
+
+                <!-- Notifikasi Simpan Google Sheet -->
+                <div class="status-box-saved">
+                    <div class="cloud-icon-wrapper">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+                        </svg>
+                    </div>
+                    <div class="status-box-text" id="statusMessage">
+                        Hasil kuis akan dikirim ke Google Spreadsheet Guru.
+                    </div>
+                </div>
+
+                <!-- Tombol Kerjakan Ulang -->
+                <button type="button" class="btn-retry" onclick="location.reload()">
+                    Kerjakan Ulang
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        Design by <span>Farchan Muzaki</span>
+    </div>
+
+<script src="google-sheets.js?v=20261019-6"></script>
+<script src="script.js?v=20261019-6"></script>
+
+</body>
+</html>
